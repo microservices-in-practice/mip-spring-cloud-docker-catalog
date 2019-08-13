@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static com.capgemini.mip.catalog.testdata.TestdataProvider.provideItemEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -98,14 +99,6 @@ public class ItemRepositoryTest {
     assertThat(foundItem.getDescription()).isEqualTo(savedItem.getDescription());
     assertThat(foundItem.getPrice()).isEqualTo(savedItem.getPrice());
     assertThat(foundItem.getName()).isEqualTo(savedItem.getName());
-  }
-
-  private static ItemEntity provideItemEntity() {
-    return ItemEntityBuilder.itemEntity().withCode("TE01")
-      .withName("Test Training (TE01)")
-      .withDescription("Very interesting training")
-      .withPrice(1000.0)
-      .build();
   }
 
 }

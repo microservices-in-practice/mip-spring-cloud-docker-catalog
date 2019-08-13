@@ -6,6 +6,7 @@ import com.capgemini.mip.catalog.service.ItemBuilder;
 import com.capgemini.mip.catalog.service.ItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
+import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext
-public class ItemControllerIntTest {
+public class ItemControllerIntegrationTest {
 
   @Autowired
   MockMvc mvc;
@@ -35,8 +40,6 @@ public class ItemControllerIntTest {
 
   @Test
   public void shouldGetItem() throws Exception {
-    String itemJson = "{\"id\":100,\"version\":0,\"code\":\"TE01\",\"name\":\"Test Training (TE01)\",\"price\":1000.0,\"description\":\"Very interesting training\"}";
-
     Item item = ItemBuilder.item()
       .withCode("TE01")
       .withName("Test Training (TE01)")
@@ -66,12 +69,21 @@ public class ItemControllerIntTest {
       .withPrice(1000.0)
       .build();
 
-    this.mvc.perform(post("/items/").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(toJson(item)))
+    ResultActions resultActions = this.mvc.perform(post("/items/").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(toJson(item)))
       .andExpect(status().isOk());
+
+    Item createdItem = toItem(resultActions.andReturn().getResponse().getContentAsString());
+
+    assertThat(itemService.findById(createdItem.getId())).isNotNull();
+
   }
 
   private static String toJson(Object object) throws JsonProcessingException {
     return new ObjectMapper().writeValueAsString(object);
+  }
+
+  private static Item toItem(String json) throws IOException {
+    return new ObjectMapper().readValue(json, Item.class);
   }
 
 }

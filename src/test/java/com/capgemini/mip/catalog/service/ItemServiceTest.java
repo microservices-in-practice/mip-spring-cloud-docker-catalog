@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.capgemini.mip.catalog.testdata.TestdataProvider.provideItem;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -133,17 +134,5 @@ public class ItemServiceTest {
 
   }
 
-  private static Item provideItem(String code) {
-    return ItemBuilder.item()
-      .withCode(code)
-      .withName("Test Training")
-      .withDescription("Very interesting training")
-      .withPrice(1000.0)
-      .build();
-  }
-
-  private static Item provideItem() {
-    return provideItem("TE01");
-  }
 
 }
