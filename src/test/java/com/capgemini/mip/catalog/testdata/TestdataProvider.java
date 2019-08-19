@@ -1,14 +1,14 @@
 package com.capgemini.mip.catalog.testdata;
 
-import com.capgemini.mip.catalog.domain.ItemEntity;
-import com.capgemini.mip.catalog.domain.ItemEntityBuilder;
-import com.capgemini.mip.catalog.service.Item;
-import com.capgemini.mip.catalog.service.ItemBuilder;
+import com.capgemini.mip.catalog.domain.Item;
+import com.capgemini.mip.catalog.domain.ItemBuilder;
+import com.capgemini.mip.catalog.service.ItemTO;
+import com.capgemini.mip.catalog.service.ItemTOBuilder;
 
 public class TestdataProvider {
 
-  public static ItemEntity provideItemEntity() {
-    return ItemEntityBuilder.itemEntity()
+  public static Item provideItem() {
+    return ItemBuilder.item()
       .withCode("TE01")
       .withName("Test Training (TE01)")
       .withDescription("Very interesting training")
@@ -16,8 +16,8 @@ public class TestdataProvider {
       .build();
   }
 
-  public static Item provideItem(String code) {
-    return ItemBuilder.item()
+  public static ItemTO provideItemTO(String code) {
+    return ItemTOBuilder.item()
       .withCode(code)
       .withName("Test Training")
       .withDescription("Very interesting training")
@@ -25,8 +25,8 @@ public class TestdataProvider {
       .build();
   }
 
-  public static Item provideItem() {
-    return provideItem("TE01");
+  public static ItemTO provideItemTO() {
+    return provideItemTO("TE01");
   }
 
 }

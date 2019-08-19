@@ -1,8 +1,8 @@
 package com.capgemini.mip.catalog.controller;
 
 
-import com.capgemini.mip.catalog.service.Item;
-import com.capgemini.mip.catalog.service.ItemBuilder;
+import com.capgemini.mip.catalog.service.ItemTO;
+import com.capgemini.mip.catalog.service.ItemTOBuilder;
 import com.capgemini.mip.catalog.service.ItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +37,7 @@ public class ItemControllerUnitTest {
 
   @Test
   public void shouldGetItem() throws Exception {
-    Item mockItem = ItemBuilder.item()
+    ItemTO mockItem = ItemTOBuilder.item()
       .withCode("TE01")
       .withName("Test Training (TE01)")
       .withDescription("Very interesting training")
@@ -64,7 +64,7 @@ public class ItemControllerUnitTest {
 
   @Test
   public void shouldGetItems() throws Exception {
-    Item mockItem = ItemBuilder.item()
+    ItemTO mockItem = ItemTOBuilder.item()
       .withCode("TE01")
       .withName("Test Training (TE01)")
       .withDescription("Very interesting training")
@@ -92,14 +92,14 @@ public class ItemControllerUnitTest {
 
   @Test
   public void shouldCreateItem() throws Exception {
-    Item item = ItemBuilder.item()
+    ItemTO item = ItemTOBuilder.item()
       .withCode("TE01")
       .withName("Test Training (TE01)")
       .withDescription("Very interesting training")
       .withPrice(1000.0)
       .build();
 
-    Item updatedItem = ItemBuilder.item()
+    ItemTO updatedItem = ItemTOBuilder.item()
       .withCode(item.getCode())
       .withName(item.getName())
       .withDescription(item.getDescription())
@@ -108,7 +108,7 @@ public class ItemControllerUnitTest {
       .withVersion(1)
       .build();
 
-    given(this.itemService.saveItem(any(Item.class))).willReturn(updatedItem);
+    given(this.itemService.saveItem(any(ItemTO.class))).willReturn(updatedItem);
 
     this.mvc.perform(post("/items/").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(toJson(item)))
       .andExpect(status().isOk())

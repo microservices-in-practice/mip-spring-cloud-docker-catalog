@@ -1,6 +1,7 @@
 package com.capgemini.mip.catalog.service;
 
-import com.capgemini.mip.catalog.domain.ItemEntity;
+import com.capgemini.mip.catalog.domain.Item;
+import com.capgemini.mip.catalog.testdata.TestdataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.capgemini.mip.catalog.testdata.TestdataProvider.provideItem;
+import static com.capgemini.mip.catalog.testdata.TestdataProvider.provideItemTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -33,10 +34,10 @@ public class ItemServiceTest {
   @Test
   public void shouldCreateItem() {
     // given
-    Item item = provideItem();
+    ItemTO item = TestdataProvider.provideItemTO();
 
     // when
-    Item savedItem = itemService.saveItem(item);
+    ItemTO savedItem = itemService.saveItem(item);
 
     // then
 
@@ -54,12 +55,12 @@ public class ItemServiceTest {
   @Test
   public void shouldUpdateItem() {
     // given
-    Item item = provideItem();
-    Item savedItem = itemService.saveItem(item);
+    ItemTO item = TestdataProvider.provideItemTO();
+    ItemTO savedItem = itemService.saveItem(item);
 
     // when
     savedItem.setPrice(200.0);
-    Item updatedItem = itemService.saveItem(savedItem);
+    ItemTO updatedItem = itemService.saveItem(savedItem);
 
     // then
     assertThat(updatedItem).isNotNull();
@@ -73,24 +74,24 @@ public class ItemServiceTest {
   @Test
   public void shouldDeleteItem() {
     // given
-    Item savedItem = itemService.saveItem(provideItem());
-    assertThat(entityManager.find(ItemEntity.class, savedItem.getId())).isNotNull();
+    ItemTO savedItem = itemService.saveItem(TestdataProvider.provideItemTO());
+    assertThat(entityManager.find(Item.class, savedItem.getId())).isNotNull();
 
     // when
     itemService.deleteItem(savedItem.getId());
 
     // then
-    assertThat(entityManager.find(ItemEntity.class, savedItem.getId())).isNull();
+    assertThat(entityManager.find(Item.class, savedItem.getId())).isNull();
 
   }
 
   @Test
   public void shouldFindById() {
     // given
-    Item savedItem = itemService.saveItem(provideItem());
+    ItemTO savedItem = itemService.saveItem(TestdataProvider.provideItemTO());
 
     // when
-    Item foundItem = itemService.findById(savedItem.getId());
+    ItemTO foundItem = itemService.findById(savedItem.getId());
 
     // then
     assertThat(foundItem).isNotNull();
@@ -102,10 +103,10 @@ public class ItemServiceTest {
   @Test
   public void shouldFindByCode() {
     // given
-    Item savedItem = itemService.saveItem(provideItem());
+    ItemTO savedItem = itemService.saveItem(TestdataProvider.provideItemTO());
 
     // when
-    Item foundItem = itemService.findByCode(savedItem.getCode());
+    ItemTO foundItem = itemService.findByCode(savedItem.getCode());
 
     // then
     assertThat(foundItem).isNotNull();
@@ -118,19 +119,19 @@ public class ItemServiceTest {
   public void shouldFindAll() {
     // given
     Long[] itemIds = Arrays.asList(
-      provideItem("TE01"),
-      provideItem("TE02"),
-      provideItem("TE03")
+      provideItemTO("TE01"),
+      provideItemTO("TE02"),
+      provideItemTO("TE03")
     ).stream()
       .map(item -> itemService.saveItem(item))
-      .map(Item::getId)
+      .map(ItemTO::getId)
       .toArray(Long[]::new);
 
     // when
-    List<Item> items = itemService.findAll();
+    List<ItemTO> items = itemService.findAll();
 
     // then
-    assertThat(items.stream().map(Item::getId).collect(Collectors.toList())).contains(itemIds);
+    assertThat(items.stream().map(ItemTO::getId).collect(Collectors.toList())).contains(itemIds);
 
   }
 

@@ -1,6 +1,6 @@
 package com.capgemini.mip.catalog.service;
 
-import com.capgemini.mip.catalog.domain.ItemEntity;
+import com.capgemini.mip.catalog.domain.Item;
 import com.capgemini.mip.catalog.repository.ItemRepository;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,31 +22,31 @@ public class ItemService {
   private DozerBeanMapper beanMapper;
 
 
-  public Item saveItem(Item item) {
-    ItemEntity itemEntity = beanMapper.map(item, ItemEntity.class);
-    itemEntity = itemRepository.save(itemEntity);
-    return beanMapper.map(itemEntity, Item.class);
+  public ItemTO saveItem(ItemTO itemTO) {
+    Item item = beanMapper.map(itemTO, Item.class);
+    item = itemRepository.save(item);
+    return beanMapper.map(item, ItemTO.class);
   }
 
   public void deleteItem(long id) {
     itemRepository.deleteById(id);
   }
 
-  public Item findById(long id) {
+  public ItemTO findById(long id) {
     return Optional.of(itemRepository.getOne(id))
-      .map(itemEntity -> beanMapper.map(itemEntity, Item.class))
+      .map(item -> beanMapper.map(item, ItemTO.class))
       .get();
   }
 
-  public Item findByCode(String code) {
+  public ItemTO findByCode(String code) {
     return Optional.ofNullable(itemRepository.findByCode(code))
-      .map(itemEntity -> beanMapper.map(itemEntity, Item.class))
+      .map(item -> beanMapper.map(item, ItemTO.class))
       .orElse(null);
   }
 
-  public List<Item> findAll() {
+  public List<ItemTO> findAll() {
     return itemRepository.findAll().stream()
-      .map(itemEntity -> beanMapper.map(itemEntity, Item.class))
+      .map(item -> beanMapper.map(item, ItemTO.class))
       .collect(Collectors.toList());
   }
 

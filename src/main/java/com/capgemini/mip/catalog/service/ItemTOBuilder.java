@@ -1,6 +1,6 @@
 package com.capgemini.mip.catalog.service;
 
-public final class ItemBuilder {
+public final class ItemTOBuilder {
   private Long id;
   private int version;
   private String code;
@@ -8,45 +8,45 @@ public final class ItemBuilder {
   private Double price;
   private String description;
 
-  private ItemBuilder() {
+  private ItemTOBuilder() {
   }
 
-  public static ItemBuilder item() {
-    return new ItemBuilder();
+  public static ItemTOBuilder item() {
+    return new ItemTOBuilder();
   }
 
-  public ItemBuilder withId(Long id) {
+  public ItemTOBuilder withId(Long id) {
     this.id = id;
     return this;
   }
 
-  public ItemBuilder withVersion(int version) {
+  public ItemTOBuilder withVersion(int version) {
     this.version = version;
     return this;
   }
 
-  public ItemBuilder withCode(String code) {
+  public ItemTOBuilder withCode(String code) {
     this.code = code;
     return this;
   }
 
-  public ItemBuilder withName(String name) {
+  public ItemTOBuilder withName(String name) {
     this.name = name;
     return this;
   }
 
-  public ItemBuilder withPrice(Double price) {
+  public ItemTOBuilder withPrice(Double price) {
     this.price = price;
     return this;
   }
 
-  public ItemBuilder withDescription(String description) {
+  public ItemTOBuilder withDescription(String description) {
     this.description = description;
     return this;
   }
 
-  public Item build() {
-    Item item = new Item();
+  public ItemTO build() {
+    ItemTO item = new ItemTO();
     item.setId(id);
     item.setVersion(version);
     item.setCode(code);

@@ -1,6 +1,6 @@
 package com.capgemini.mip.catalog.controller;
 
-import com.capgemini.mip.catalog.service.Item;
+import com.capgemini.mip.catalog.service.ItemTO;
 import com.capgemini.mip.catalog.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,21 +19,21 @@ public class ItemController {
   private ItemService itemService;
 
   @GetMapping(path = "/{code}")
-  public ResponseEntity<Item> getItem(@PathVariable String code) {
+  public ResponseEntity<ItemTO> getItem(@PathVariable String code) {
     return Optional.ofNullable(itemService.findByCode(code))
       .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
       .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   @GetMapping()
-  public ResponseEntity<List<Item>> getItems() {
+  public ResponseEntity<List<ItemTO>> getItems() {
     return Optional.ofNullable(itemService.findAll())
       .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
       .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   @PostMapping()
-  public ResponseEntity<Item> saveOrUpdate(@Validated  @RequestBody Item item) {
+  public ResponseEntity<ItemTO> saveOrUpdate(@Validated  @RequestBody ItemTO item) {
     return Optional.ofNullable(itemService.saveItem(item))
       .map(c -> new ResponseEntity<>(c, HttpStatus.OK))
       .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

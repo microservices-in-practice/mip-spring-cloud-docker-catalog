@@ -2,7 +2,7 @@ package com.capgemini.mip.catalog.service;
 
 import java.io.Serializable;
 
-public class Item implements Serializable {
+public class ItemTO implements Serializable {
   private Long id;
   private Integer version;
   private String code;

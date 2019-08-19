@@ -1,10 +1,10 @@
 package com.capgemini.mip.catalog.repository;
 
-import com.capgemini.mip.catalog.domain.ItemEntity;
+import com.capgemini.mip.catalog.domain.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
+public interface ItemRepository extends JpaRepository<Item, Long> {
 
-  public ItemEntity findByCode(String code);
+  public Item findByCode(String code);
 
 }

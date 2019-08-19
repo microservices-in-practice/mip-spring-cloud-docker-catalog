@@ -1,12 +1,11 @@
 package com.capgemini.mip.catalog.controller;
 
 
-import com.capgemini.mip.catalog.service.Item;
-import com.capgemini.mip.catalog.service.ItemBuilder;
+import com.capgemini.mip.catalog.service.ItemTO;
+import com.capgemini.mip.catalog.service.ItemTOBuilder;
 import com.capgemini.mip.catalog.service.ItemService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +39,14 @@ public class ItemControllerIntegrationTest {
 
   @Test
   public void shouldGetItem() throws Exception {
-    Item item = ItemBuilder.item()
+    ItemTO item = ItemTOBuilder.item()
       .withCode("TE01")
       .withName("Test Training (TE01)")
       .withDescription("Very interesting training")
       .withPrice(1000.0)
       .build();
 
-    Item savedItem = itemService.saveItem(item);
+    ItemTO savedItem = itemService.saveItem(item);
 
     this.mvc.perform(get("/items/" + savedItem.getCode()).contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk())
@@ -62,7 +61,7 @@ public class ItemControllerIntegrationTest {
 
   @Test
   public void shouldCreateItem() throws Exception {
-    Item item = ItemBuilder.item()
+    ItemTO item = ItemTOBuilder.item()
       .withCode("TE02")
       .withName("Test Training (TE02)")
       .withDescription("Very interesting training")
@@ -72,7 +71,7 @@ public class ItemControllerIntegrationTest {
     ResultActions resultActions = this.mvc.perform(post("/items/").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(toJson(item)))
       .andExpect(status().isOk());
 
-    Item createdItem = toItem(resultActions.andReturn().getResponse().getContentAsString());
+    ItemTO createdItem = toItem(resultActions.andReturn().getResponse().getContentAsString());
 
     assertThat(itemService.findById(createdItem.getId())).isNotNull();
 
@@ -82,8 +81,8 @@ public class ItemControllerIntegrationTest {
     return new ObjectMapper().writeValueAsString(object);
   }
 
-  private static Item toItem(String json) throws IOException {
-    return new ObjectMapper().readValue(json, Item.class);
+  private static ItemTO toItem(String json) throws IOException {
+    return new ObjectMapper().readValue(json, ItemTO.class);
   }
 
 }
