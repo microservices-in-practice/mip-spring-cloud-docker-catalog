@@ -1,7 +1,7 @@
 drop table item if exists;
 drop sequence if exists hibernate_sequence;
 
-create sequence hibernate_sequence start with 100 increment by 1;
+create sequence hibernate_sequence start with 1000 increment by 1;
 
 create table item (
   id bigint not null,

@@ -1,6 +1,5 @@
 package com.capgemini.mip.catalog.service;
 
-import com.capgemini.mip.catalog.config.ConfigProperties;
 import com.capgemini.mip.catalog.domain.ItemEntity;
 import com.capgemini.mip.catalog.repository.ItemRepository;
 import org.dozer.DozerBeanMapper;
@@ -22,8 +21,6 @@ public class ItemService {
   @Autowired
   private DozerBeanMapper beanMapper;
 
-  @Autowired
-  private ConfigProperties properties;
 
   public Item saveItem(Item item) {
     ItemEntity itemEntity = beanMapper.map(item, ItemEntity.class);
@@ -38,27 +35,20 @@ public class ItemService {
   public Item findById(long id) {
     return Optional.of(itemRepository.getOne(id))
       .map(itemEntity -> beanMapper.map(itemEntity, Item.class))
-      .map(this::applyDiscountRate)
       .get();
   }
 
   public Item findByCode(String code) {
     return Optional.ofNullable(itemRepository.findByCode(code))
       .map(itemEntity -> beanMapper.map(itemEntity, Item.class))
-      .map(this::applyDiscountRate)
       .orElse(null);
   }
 
   public List<Item> findAll() {
     return itemRepository.findAll().stream()
       .map(itemEntity -> beanMapper.map(itemEntity, Item.class))
-      .map(this::applyDiscountRate)
       .collect(Collectors.toList());
   }
 
-  private Item applyDiscountRate(Item item) {
-    item.setPrice(item.getPrice() * (1.0 - properties.getDiscount()));
-    return item;
-  }
 
 }

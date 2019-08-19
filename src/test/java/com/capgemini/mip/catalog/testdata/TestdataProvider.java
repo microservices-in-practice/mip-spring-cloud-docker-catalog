@@ -8,7 +8,8 @@ import com.capgemini.mip.catalog.service.ItemBuilder;
 public class TestdataProvider {
 
   public static ItemEntity provideItemEntity() {
-    return ItemEntityBuilder.itemEntity().withCode("TE01")
+    return ItemEntityBuilder.itemEntity()
+      .withCode("TE01")
       .withName("Test Training (TE01)")
       .withDescription("Very interesting training")
       .withPrice(1000.0)
