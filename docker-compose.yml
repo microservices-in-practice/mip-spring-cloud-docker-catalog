@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+
+  catalogdb:
+    image: postgres
+    hostname: catalogdb
+    ports:
+      - "5432:5432"
+    networks:
+      - microservices
+#    volumes:
+#      - "catalogdb:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_PASSWORD=catalog
+      - POSTGRES_USER=catalog
+      - POSTGRES_DB=catalog
+
+  catalogsvc:
+    image: mip/catalog-service
+    hostname: catalogsvc
+    depends_on:
+      - catalogdb
+    networks:
+      - microservices
+    ports:
+      - 8091:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=cloud
+
+networks:
+  microservices:
+    external: true
+
+#volumes:
+#  catalogdb:
+#    external: true
