@@ -1,8 +1,11 @@
+server:
+  port: 8091
 spring:
   application:
     name: catalog
   profiles:
     active: dev
+
 ---
 
 spring:
@@ -24,17 +27,5 @@ spring:
       ddl-auto: validate
   flyway:
     locations: classpath:db/migration/{vendor},classpath:db/migration/common
-server:
-  port: 8091
-
----
-
-spring:
-  profiles: prod
-  profiles.include: postgres
 
 
----
-
-spring:
-  profiles: postgres
