@@ -6,6 +6,10 @@ spring:
   cloud:
     config:
       enabled: false
+    bus:
+      enabled: false
+    discovery:
+      enabled: false
 
 ---
 
@@ -15,4 +19,8 @@ spring:
     config:
       uri: http://config:8888
       failFast: true
+      enabled: true
+    bus:
+      enabled: true
+    discovery:
       enabled: true
